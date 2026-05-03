@@ -129,14 +129,14 @@
   let allSubs = [], deleteTargetId = null;
 
   onAuthStateChanged(auth, user => {
-    if (!user) { window.location.href = "/login";; return; }
-    if (!isAdmin(user)) { window.location.href = "/login";error=unauthorized'; return; }
+    if (!user) { window.location.href = "/login"; return; }
+    if (!isAdmin(user)) { window.location.href = "/login?error=unauthorized"; return; }
     document.getElementById('userEmail').textContent = user.email;
     document.getElementById('userAvatar').textContent = user.email[0].toUpperCase();
     loadSubs();
   });
 
-  document.getElementById('logoutBtn').addEventListener('click', async () => { await signOut(auth); window.location.href = "/login";; });
+  document.getElementById('logoutBtn').addEventListener('click', async () => { await signOut(auth); window.location.href = "/login"; });
   document.getElementById('dateDisplay').textContent = new Date().toLocaleDateString('en-PH', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
   async function loadSubs() {
