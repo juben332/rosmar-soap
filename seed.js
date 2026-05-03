@@ -2,7 +2,7 @@
 import { readFileSync } from 'fs';
 import { homedir } from 'os';
 
-const PROJECT_ID = 'rosmar-skincare-ph';
+const PROJECT_ID = 'rosmar-soap-ph';
 const BASE_URL   = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
 
 const config      = JSON.parse(readFileSync(homedir() + '/.config/configstore/firebase-tools.json', 'utf8'));
@@ -22,18 +22,14 @@ function toDoc(obj) {
 }
 
 const products = [
-  { name:'Luminous Gel Cleanser',       category:'cleanser',    price:890,  size:'150ml', benefit:'Deeply cleanses & brightens dull skin',      image:'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&auto=format&fit=crop&q=80',          badge:'best', inStock:true },
-  { name:'Milk & Honey Oil Cleanser',    category:'cleanser',    price:1190, size:'100ml', benefit:'Melts makeup & nourishes deeply',             image:'https://images.unsplash.com/photo-1556228841-a3c527ebefe5?w=600&auto=format&fit=crop&q=80',          badge:'',     inStock:true },
-  { name:'Rose Water Balancing Toner',   category:'toner',       price:790,  size:'200ml', benefit:'Balances pH & preps skin for serums',         image:'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600&auto=format&fit=crop&q=80',      badge:'',     inStock:true },
-  { name:'Niacinamide Clarity Toner',    category:'toner',       price:950,  size:'200ml', benefit:'Minimises pores & controls oil',              image:'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600&h=601&auto=format&fit=crop&q=80', badge:'new',  inStock:true },
-  { name:'24K Gold Radiance Serum',      category:'serum',       price:1590, size:'30ml',  benefit:'Firms, brightens & reduces dark spots',       image:'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&auto=format&fit=crop&q=80',        badge:'new',  inStock:true },
-  { name:'Vitamin C Brightening Serum',  category:'serum',       price:1390, size:'30ml',  benefit:'Fades hyperpigmentation & evens skin tone',   image:'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=600&h=601&auto=format&fit=crop&q=80',  badge:'',     inStock:true },
-  { name:'Desert Rose Moisturizer',      category:'moisturizer', price:1290, size:'50ml',  benefit:'Intensely hydrates & softens texture',        image:'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=600&auto=format&fit=crop&q=80',        badge:'best', inStock:true },
-  { name:'Oud & Shea Night Butter',      category:'moisturizer', price:1490, size:'50ml',  benefit:'Rich overnight repair & restoration',         image:'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=601&auto=format&fit=crop&q=80',    badge:'',     inStock:true },
-  { name:'Saffron Eye Revival Cream',    category:'treatment',   price:1890, size:'15ml',  benefit:'Reduces dark circles & puffiness',            image:'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&auto=format&fit=crop&q=80',        badge:'new',  inStock:true },
-  { name:'Gold Infusion Face Mask',      category:'treatment',   price:2490, size:'75ml',  benefit:'Instant luminosity & deep detox',             image:'https://images.unsplash.com/photo-1570194065650-d99fb4abbd90?w=600&h=601&auto=format&fit=crop&q=80',  badge:'',     inStock:true },
-  { name:'Veil SPF 50+ Sunscreen Fluid', category:'spf',         price:990,  size:'50ml',  benefit:'Invisible protection with a dewy finish',     image:'https://images.unsplash.com/photo-1570194065650-d99fb4abbd90?w=600&auto=format&fit=crop&q=80',        badge:'best', inStock:true },
-  { name:'Tinted SPF 40 Skin Tint',      category:'spf',         price:1190, size:'30ml',  benefit:'Sheer coverage with full sun protection',     image:'https://images.unsplash.com/photo-1556228841-a3c527ebefe5?w=600&h=601&auto=format&fit=crop&q=80',    badge:'',     inStock:true },
+  { name:'Whitening Sunscreen SPF50',    category:'spf',         price:399,  size:'50ml',  benefit:'Helps prevent sunburn, dark spots, and premature aging',                            image:'', badge:'best', inStock:true },
+  { name:'Milky Peeling Soap',           category:'cleanser',    price:199,  size:'135g',  benefit:'Helps brighten and even out skin tone',                                             image:'', badge:'',     inStock:true },
+  { name:'SunMuse Sunscreen Lotion SPF50', category:'spf',       price:349,  size:'60ml',  benefit:'Strong SPF50 protection against UVA & UVB rays',                                   image:'', badge:'new',  inStock:true },
+  { name:'Charcoal Lumay Soap',          category:'cleanser',    price:149,  size:'135g',  benefit:'Helps reduce blackheads & whiteheads',                                              image:'', badge:'',     inStock:true },
+  { name:'Brightening Serum',            category:'serum',       price:499,  size:'30ml',  benefit:'Deeply hydrates and plumps skin',                                                   image:'', badge:'best', inStock:true },
+  { name:'Instant Whitening Lotion',     category:'moisturizer', price:299,  size:'200ml', benefit:'Instant brightening effect for a more radiant, even-looking skin tone',             image:'', badge:'',     inStock:true },
+  { name:'Babad Soap',                   category:'cleanser',    price:179,  size:'135g',  benefit:'Cleansing + refreshing feel — leaves skin soft and clean after use',                image:'', badge:'',     inStock:true },
+  { name:'Glowing Facial Set',           category:'treatment',   price:899,  size:'set',   benefit:'Suitable for maintenance after rejuvenating sets',                                  image:'', badge:'new',  inStock:true },
 ];
 
 async function seed() {

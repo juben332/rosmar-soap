@@ -10,12 +10,12 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebas
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey:            "AIzaSyAMuah7QKl-S2mI4vbRwBxIryjaZZLAVWA",
-  authDomain:        "rosmar-skincare-ph.firebaseapp.com",
-  projectId:         "rosmar-skincare-ph",
-  storageBucket:     "rosmar-skincare-ph.firebasestorage.app",
-  messagingSenderId: "912886683524",
-  appId:             "1:912886683524:web:219785683a0a87bfe6afd1"
+  apiKey:            "AIzaSyCq439iU04E-TqeQu0ImbDwoUec1Se5o2c",
+  authDomain:        "rosmar-soap-ph.firebaseapp.com",
+  projectId:         "rosmar-soap-ph",
+  storageBucket:     "rosmar-soap-ph.firebasestorage.app",
+  messagingSenderId: "52608885064",
+  appId:             "1:52608885064:web:bb413636222ddee8ca137d"
 };
 
 const app  = initializeApp(firebaseConfig);
