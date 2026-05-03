@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Habibi Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__brand">
+      <img src="../images/logo.png" alt="Logo" class="sidebar__brand-logo" onerror="this.style.display='none'">
+      <div class="sidebar__brand-name">Habibi<span>.</span></div>
+    </div>
+    <nav class="sidebar__nav">
+      <div class="sidebar__section">Main</div>
+      <a href="index.html" class="sidebar__link active"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="products.html" class="sidebar__link"><i class="fas fa-box-open"></i> Products</a>
+      <a href="orders.html" class="sidebar__link"><i class="fas fa-receipt"></i> Orders <span class="badge" id="pendingCount">0</span></a>
+      <div class="sidebar__section">Marketing</div>
+      <a href="subscribers.html" class="sidebar__link"><i class="fas fa-envelope"></i> Subscribers</a>
+      <div class="sidebar__section">Settings</div>
+      <a href="../index.html" class="sidebar__link" target="_blank"><i class="fas fa-external-link-alt"></i> View Website</a>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="sidebar__user-avatar" id="userAvatar">A</div>
+        <div>
+          <div class="sidebar__user-name" id="userEmail">Admin</div>
+          <div class="sidebar__user-role">Administrator</div>
+        </div>
+      </div>
+      <button class="sidebar__logout" id="logoutBtn">
+        <i class="fas fa-sign-out-alt"></i> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="admin-main">
+    <header class="topbar">
+      <div class="topbar__title">Dashboard</div>
+      <div class="topbar__right">
+        <span style="font-size:0.82rem;color:var(--a-muted)" id="dateDisplay"></span>
+        <div id="pendingAlert" style="display:none;align-items:center;gap:8px;background:rgba(230,81,0,0.1);border:1px solid rgba(230,81,0,0.3);color:#E65100;padding:7px 14px;border-radius:100px;font-size:0.82rem;font-weight:600">
+          <i class="fas fa-bell" style="animation:bellRing 1s ease infinite"></i>
+          <span id="pendingAlertText">0 pending orders</span>
+        </div>
+        <button class="topbar__btn topbar__btn--ghost" id="soundBtn" title="Click to enable notification sound" style="gap:6px">
+          <i class="fas fa-bell-slash" id="soundIcon"></i> <span id="soundLabel">Enable Sound</span>
+        </button>
+        <a href="products.html" class="topbar__btn topbar__btn--primary">
+          <i class="fas fa-plus"></i> Add Product
+        </a>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card__icon"><i class="fas fa-box-open"></i></div>
+          <div class="stat-card__label">Total Products</div>
+          <div class="stat-card__value" id="statProducts">—</div>
+          <div class="stat-card__change"><i class="fas fa-check-circle"></i> <span id="statInStock">0</span> in stock</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon"><i class="fas fa-receipt"></i></div>
+          <div class="stat-card__label">Total Orders</div>
+          <div class="stat-card__value" id="statOrders">—</div>
+          <div class="stat-card__change"><i class="fas fa-clock"></i> <span id="statPending">0</span> pending</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon"><i class="fas fa-peso-sign"></i></div>
+          <div class="stat-card__label">Total Revenue</div>
+          <div class="stat-card__value" id="statRevenue">—</div>
+          <div class="stat-card__change"><i class="fas fa-check-circle"></i> Delivered orders only</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon"><i class="fas fa-envelope"></i></div>
+          <div class="stat-card__label">Subscribers</div>
+          <div class="stat-card__value" id="statSubs">—</div>
+          <div class="stat-card__change"><i class="fas fa-users"></i> Newsletter</div>
+        </div>
+        <div class="stat-card stat-card--warning">
+          <div class="stat-card__icon stat-card__icon--warning"><i class="fas fa-exclamation-triangle"></i></div>
+          <div class="stat-card__label">Low Stock</div>
+          <div class="stat-card__value" id="statLowStock">—</div>
+          <div class="stat-card__change stat-card__change--warning"><i class="fas fa-arrow-down"></i> 1–5 units left</div>
+        </div>
+        <div class="stat-card stat-card--danger">
+          <div class="stat-card__icon stat-card__icon--danger"><i class="fas fa-times-circle"></i></div>
+          <div class="stat-card__label">Out of Stock</div>
+          <div class="stat-card__value" id="statOutOfStock">—</div>
+          <div class="stat-card__change stat-card__change--danger"><i class="fas fa-ban"></i> Needs restocking</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Recent Orders -->
+        <div class="panel">
+          <div class="panel__head">
+            <div class="panel__title">Recent Orders</div>
+            <a href="orders.html" style="font-size:0.8rem;color:var(--a-pink);font-weight:600">View all →</a>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Customer</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="recentOrdersBody">
+                <tr class="loading-row"><td colspan="4"><span class="spinner"></span> Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Recent Subscribers -->
+        <div class="panel">
+          <div class="panel__head">
+            <div class="panel__title">Latest Subscribers</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="subsBody">
+                <tr class="loading-row"><td colspan="2"><span class="spinner"></span> Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Log -->
+      <div class="panel" style="margin-top:20px">
+        <div class="panel__head">
+          <div class="panel__title">Activity Log</div>
+          <span style="font-size:0.78rem;color:var(--a-muted)" id="logCount">Recent admin actions</span>
+        </div>
+        <!-- Filter tabs -->
+        <div style="display:flex;gap:8px;padding:0 20px 16px;flex-wrap:wrap" id="logFilterTabs">
+          <button class="log-tab active" data-cat="">All</button>
+          <button class="log-tab" data-cat="order-pending">Pending</button>
+          <button class="log-tab" data-cat="order-processing">Processing</button>
+          <button class="log-tab" data-cat="order-shipped">Shipped</button>
+          <button class="log-tab" data-cat="order-delivered">Delivered</button>
+          <button class="log-tab" data-cat="order-cancelled">Cancelled</button>
+          <button class="log-tab" data-cat="product">Products</button>
+          <button class="log-tab" data-cat="stock">Stock</button>
+          <button class="log-tab" data-cat="bulk">Bulk</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:120px">Type</th>
+                <th>Action</th>
+                <th>Detail</th>
+                <th>Admin</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody id="activityLogBody">
+              <tr class="loading-row"><td colspan="5"><span class="spinner"></span> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Low Stock Alerts -->
+      <div class="panel" style="margin-top:20px" id="lowStockPanel">
+        <div class="panel__head">
+          <div class="panel__title"><i class="fas fa-exclamation-triangle" style="color:var(--a-warning);margin-right:8px;font-size:0.9rem"></i>Inventory Alerts</div>
+          <a href="products.html" style="font-size:0.8rem;color:var(--a-pink);font-weight:600">Manage stock →</a>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock Level</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="lowStockBody">
+              <tr class="loading-row"><td colspan="5"><span class="spinner"></span> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Product Overview -->
+      <div class="panel" style="margin-top:20px">
+        <div class="panel__head">
+          <div class="panel__title">Product Overview</div>
+          <a href="products.html" style="font-size:0.8rem;color:var(--a-pink);font-weight:600">Manage all →</a>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Badge</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody id="productsBody">
+              <tr class="loading-row"><td colspan="5"><span class="spinner"></span> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes bellRing {
+    0%,100% { transform: rotate(0); }
+    20%      { transform: rotate(-15deg); }
+    40%      { transform: rotate(15deg); }
+    60%      { transform: rotate(-10deg); }
+    80%      { transform: rotate(10deg); }
+  }
+  .order-toast {
+    position: fixed; top: 76px; right: 28px; z-index: 9999;
+    background: #fff; border-left: 4px solid #E65100;
+    border-radius: 12px; padding: 16px 20px; min-width: 280px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    display: flex; align-items: center; gap: 14px;
+    animation: toastIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes toastIn {
+    from { opacity:0; transform: translateX(60px); }
+    to   { opacity:1; transform: translateX(0); }
+  }
+  .order-toast__icon {
+    width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(230,81,0,0.1); color: #E65100;
+    display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+  }
+  .order-toast__title { font-weight: 700; font-size: 0.9rem; color: #2D0F17; }
+  .order-toast__sub   { font-size: 0.78rem; color: #8A606A; margin-top: 2px; }
+  .order-toast__close { margin-left: auto; background: none; border: none; cursor: pointer; color: #8A606A; font-size: 1rem; padding: 4px; }
+</style>
+
+<script type="module">
+  import { auth, db, isAdmin } from '../js/firebase-config.js';
+  import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { collection, getDocs, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  let lastPendingCount = null;
+  let audioCtx = null;
+  let soundEnabled = false;
+
+  // ── Notification sound ────────────────────────────────────────
+  function playOrderSound() {
+    if (!soundEnabled || !audioCtx) return;
+    try {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const notes = [
+        { freq: 523.25, t: 0,    dur: 0.18 },
+        { freq: 659.25, t: 0.18, dur: 0.18 },
+        { freq: 783.99, t: 0.36, dur: 0.35 },
+      ];
+      notes.forEach(({ freq, t, dur }) => {
+        const osc  = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.type = 'sine'; osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, audioCtx.currentTime + t);
+        gain.gain.linearRampToValueAtTime(0.28, audioCtx.currentTime + t + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + t + dur);
+        osc.start(audioCtx.currentTime + t);
+        osc.stop(audioCtx.currentTime + t + dur + 0.05);
+      });
+    } catch (e) {}
+  }
+
+  // ── Update button UI ──────────────────────────────────────────
+  function setSoundUI(on) {
+    document.getElementById('soundIcon').className    = on ? 'fas fa-bell' : 'fas fa-bell-slash';
+    document.getElementById('soundLabel').textContent = on ? 'Sound On'    : 'Enable Sound';
+    document.getElementById('soundBtn').style.color   = on ? 'var(--a-pink)' : '';
+  }
+
+  // ── Resume AudioContext when tab becomes visible ───────────────
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  });
+
+  // ── Enable Sound button ───────────────────────────────────────
+  document.getElementById('soundBtn').addEventListener('click', () => {
+    if (soundEnabled) {
+      soundEnabled = false;
+      localStorage.setItem('adminSound', 'off');
+      setSoundUI(false);
+      return;
+    }
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      audioCtx.resume().then(() => {
+        soundEnabled = true;
+        localStorage.setItem('adminSound', 'on');
+        setSoundUI(true);
+        playOrderSound(); // test chime
+      });
+    } catch (e) { alert('Audio not supported in this browser.'); }
+  });
+
+  // ── Restore saved preference on page load ─────────────────────
+  if (localStorage.getItem('adminSound') === 'on') {
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      // AudioContext starts suspended — it will resume on next user interaction
+      // or when tab becomes visible. Mark as enabled so it plays when ready.
+      soundEnabled = true;
+      setSoundUI(true);
+      // Resume on first user interaction if still suspended
+      const resumeOnce = () => {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        document.removeEventListener('click', resumeOnce);
+      };
+      document.addEventListener('click', resumeOnce);
+    } catch (e) {}
+  }
+
+  // ── Visual toast alert ───────────────────────────────────────
+  function showOrderToast(count) {
+    document.querySelectorAll('.order-toast').forEach(el => el.remove());
+    const toast = document.createElement('div');
+    toast.className = 'order-toast';
+    toast.innerHTML = `
+      <div class="order-toast__icon"><i class="fas fa-bell"></i></div>
+      <div>
+        <div class="order-toast__title">New Order Received!</div>
+        <div class="order-toast__sub">${count} pending order${count > 1 ? 's' : ''} waiting for action</div>
+      </div>
+      <button class="order-toast__close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast?.remove(), 6000);
+  }
+
+  // ── Topbar pending badge ─────────────────────────────────────
+  function updatePendingBadge(count) {
+    const el   = document.getElementById('pendingAlert');
+    const text = document.getElementById('pendingAlertText');
+    if (count > 0) {
+      el.style.display = 'flex';
+      text.textContent = `${count} pending order${count > 1 ? 's' : ''}`;
+    } else {
+      el.style.display = 'none';
+    }
+  }
+
+  // Auth guard — admin only
+  onAuthStateChanged(auth, user => {
+    if (!user) { window.location.href = '../login.html'; return; }
+    if (!isAdmin(user)) { window.location.href = '../login.html?error=unauthorized'; return; }
+    document.getElementById('userEmail').textContent = user.email;
+    document.getElementById('userAvatar').textContent = user.email[0].toUpperCase();
+    loadDashboard();
+    initOrdersListener();
+  });
+
+  // Logout
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await signOut(auth);
+    window.location.href = '../login.html';
+  });
+
+  // Date
+  document.getElementById('dateDisplay').textContent = new Date().toLocaleDateString('en-PH', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+  // ── Real-time orders listener ────────────────────────────────
+  function initOrdersListener() {
+    onSnapshot(collection(db, 'orders'), snap => {
+      const orders  = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const pending = orders.filter(o => o.status === 'pending').length;
+
+      // Update sidebar badge + stat card
+      document.getElementById('pendingCount').textContent  = pending;
+      document.getElementById('statOrders').textContent    = orders.length;
+      document.getElementById('statPending').textContent   = pending;
+      updatePendingBadge(pending);
+
+      // Play sound + toast only when NEW pending orders arrive (not on first load)
+      if (lastPendingCount !== null && pending > lastPendingCount) {
+        playOrderSound();
+        showOrderToast(pending);
+      }
+      lastPendingCount = pending;
+
+      // Refresh recent orders table
+      const recent = orders.sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0)).slice(0,5);
+      const body = document.getElementById('recentOrdersBody');
+      if (body) {
+        body.innerHTML = recent.length ? recent.map(o => `
+          <tr>
+            <td><div class="table-name">#${o.id.slice(-6).toUpperCase()}</div><div class="table-sub">${o.items?.length||0} item(s)</div></td>
+            <td><div class="table-name">${o.customer?.name||'Guest'}</div><div class="table-sub">${o.customer?.email||''}</div></td>
+            <td style="font-weight:700">₱${(o.total||0).toLocaleString()}</td>
+            <td><span class="badge badge-${o.status||'pending'}">${capitalize(o.status||'pending')}</span></td>
+          </tr>`).join('') : '<tr><td colspan="4" style="text-align:center;padding:32px;color:var(--a-muted)">No orders yet</td></tr>';
+      }
+    });
+  }
+
+  function stockClass(stock) {
+    if (stock == null || stock === 0) return 'stock-out';
+    if (stock <= 5) return 'stock-low';
+    return 'stock-ok';
+  }
+  function stockLabel(stock) {
+    if (stock == null || stock === 0) return 'Out of Stock';
+    if (stock <= 5) return 'Low Stock';
+    return 'In Stock';
+  }
+  function stockBar(stock, max = 50) {
+    const pct = Math.min(100, Math.round(((stock||0) / max) * 100));
+    const color = stock === 0 ? '#C62828' : stock <= 5 ? '#E65100' : '#2E7D32';
+    return `<div style="height:5px;border-radius:3px;background:#f0d8de;margin-top:5px;overflow:hidden">
+      <div style="height:100%;width:${pct}%;background:${color};border-radius:3px;transition:width 0.4s"></div>
+    </div>`;
+  }
+
+  async function loadDashboard() {
+    try {
+      const [products, subs, logs] = await Promise.all([
+        getDocs(collection(db, 'products')),
+        getDocs(collection(db, 'subscribers')),
+        getDocs(query(collection(db, 'activityLog'), orderBy('timestamp', 'desc'), limit(20)))
+      ]);
+
+      // Stats
+      const productDocs = products.docs.map(d => ({ id: d.id, ...d.data() }));
+      const revenue     = (await getDocs(collection(db, 'orders'))).docs
+        .map(d => d.data()).filter(o => o.status === 'delivered').reduce((s, o) => s + (o.total || 0), 0);
+      const inStock     = productDocs.filter(p => (p.stock ?? 0) > 0).length;
+      const lowStock    = productDocs.filter(p => (p.stock ?? 0) > 0 && (p.stock ?? 0) <= 5).length;
+      const outOfStock  = productDocs.filter(p => (p.stock ?? 0) === 0).length;
+
+      document.getElementById('statProducts').textContent   = products.size;
+      document.getElementById('statInStock').textContent    = inStock;
+      document.getElementById('statRevenue').textContent    = '₱' + revenue.toLocaleString();
+      document.getElementById('statSubs').textContent       = subs.size;
+      document.getElementById('statLowStock').textContent   = lowStock;
+      document.getElementById('statOutOfStock').textContent = outOfStock;
+
+      // Subscribers
+      const subDocs = subs.docs.map(d => d.data()).slice(0,6);
+      document.getElementById('subsBody').innerHTML = subDocs.length ? subDocs.map(s => `
+        <tr>
+          <td>${s.email}</td>
+          <td style="color:var(--a-muted);font-size:0.8rem">${s.subscribedAt ? new Date(s.subscribedAt.seconds*1000).toLocaleDateString() : '—'}</td>
+        </tr>`).join('') : '<tr><td colspan="2" style="text-align:center;padding:32px;color:var(--a-muted)">No subscribers yet</td></tr>';
+
+      // Activity Log
+      const allLogDocs = logs.docs.map(d => d.data());
+      let activeLogCat = '';
+
+      function getLogCategory(l) {
+        if (l.category) return l.category; // use saved category if available
+        const a = (l.action || '').toLowerCase();
+        if (a.includes('bulk')) return 'bulk';
+        if (a.includes('→ pending'))    return 'order-pending';
+        if (a.includes('→ processing')) return 'order-processing';
+        if (a.includes('→ shipped'))    return 'order-shipped';
+        if (a.includes('→ delivered'))  return 'order-delivered';
+        if (a.includes('→ cancelled'))  return 'order-cancelled';
+        if (a.includes('stock updated')) return 'stock';
+        if (a.includes('product added') || a.includes('product edited') || a.includes('product deleted')) return 'product';
+        return 'other';
+      }
+
+      const LOG_BADGE = {
+        'order-pending':    { label: 'Pending',    bg: 'rgba(230,81,0,0.12)',    color: '#E65100' },
+        'order-processing': { label: 'Processing', bg: 'rgba(2,119,189,0.12)',   color: '#0277BD' },
+        'order-shipped':    { label: 'Shipped',    bg: 'rgba(212,104,122,0.15)', color: 'var(--a-pink)' },
+        'order-delivered':  { label: 'Delivered',  bg: 'rgba(46,125,50,0.12)',   color: '#2E7D32' },
+        'order-cancelled':  { label: 'Cancelled',  bg: 'rgba(198,40,40,0.12)',   color: '#C62828' },
+        'product':          { label: 'Product',    bg: 'rgba(123,31,162,0.12)',  color: '#7B1FA2' },
+        'stock':            { label: 'Stock',      bg: 'rgba(0,121,107,0.12)',   color: '#00796B' },
+        'bulk':             { label: 'Bulk',       bg: 'rgba(69,90,100,0.12)',   color: '#455A64' },
+        'other':            { label: 'Action',     bg: 'rgba(212,104,122,0.1)',  color: 'var(--a-pink)' },
+      };
+
+      function logDayKey(l) {
+        if (!l.timestamp?.seconds) return 'Unknown Date';
+        const d = new Date(l.timestamp.seconds * 1000);
+        const today     = new Date();
+        const yesterday = new Date(); yesterday.setDate(today.getDate() - 1);
+        const isToday     = d.toDateString() === today.toDateString();
+        const isYesterday = d.toDateString() === yesterday.toDateString();
+        const label = d.toLocaleDateString('en-PH', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+        return isToday ? `Today — ${label}` : isYesterday ? `Yesterday — ${label}` : label;
+      }
+
+      function renderActivityLog() {
+        const filtered = activeLogCat ? allLogDocs.filter(l => getLogCategory(l) === activeLogCat) : allLogDocs;
+        document.getElementById('logCount').textContent = `${filtered.length} of ${allLogDocs.length} entries`;
+
+        if (!filtered.length) {
+          document.getElementById('activityLogBody').innerHTML =
+            `<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--a-muted)">No activity found</td></tr>`;
+          return;
+        }
+
+        let lastDay = null;
+        const rows = [];
+        filtered.forEach(l => {
+          const day = logDayKey(l);
+          if (day !== lastDay) {
+            rows.push(`<tr class="date-divider-row"><td colspan="5">
+              <span class="date-divider-label"><i class="fas fa-calendar-day"></i> ${day}</span>
+            </td></tr>`);
+            lastDay = day;
+          }
+          const ts      = l.timestamp?.seconds ? new Date(l.timestamp.seconds * 1000) : null;
+          const timeStr = ts ? ts.toLocaleTimeString('en-PH', { hour:'2-digit', minute:'2-digit' }) : '—';
+          const cat     = getLogCategory(l);
+          const badge   = LOG_BADGE[cat] || LOG_BADGE['other'];
+          rows.push(`<tr>
+            <td><span style="display:inline-block;padding:3px 10px;border-radius:100px;font-size:0.72rem;font-weight:700;background:${badge.bg};color:${badge.color}">${badge.label}</span></td>
+            <td style="font-weight:600;font-size:0.85rem;color:var(--a-text)">${l.action || '—'}</td>
+            <td style="color:var(--a-muted);font-size:0.8rem">${l.detail || '—'}</td>
+            <td style="font-size:0.78rem;color:var(--a-muted)">${l.adminEmail || '—'}</td>
+            <td style="font-size:0.8rem;color:var(--a-muted);white-space:nowrap">${timeStr}</td>
+          </tr>`);
+        });
+        document.getElementById('activityLogBody').innerHTML = rows.join('');
+      }
+
+      renderActivityLog();
+
+      // Filter tab clicks
+      document.querySelectorAll('.log-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.log-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          activeLogCat = tab.dataset.cat;
+          renderActivityLog();
+        });
+      });
+
+      // Low Stock Alerts — products with stock 0-5
+      const alerts = productDocs.filter(p => (p.stock ?? 0) <= 5).sort((a,b) => (a.stock??0) - (b.stock??0));
+      document.getElementById('lowStockBody').innerHTML = alerts.length ? alerts.map(p => `
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:12px">
+              <img class="table-img" src="${p.image||''}" alt="${p.name}" onerror="this.style.background='var(--a-bg)';this.removeAttribute('src')">
+              <div class="table-name">${p.name}</div>
+            </div>
+          </td>
+          <td style="text-transform:capitalize">${p.category||'—'}</td>
+          <td style="font-weight:700;color:var(--a-pink)">₱${(p.price||0).toLocaleString()}</td>
+          <td>
+            <span style="font-weight:700;font-size:1rem;color:${(p.stock??0)===0?'#C62828':'#E65100'}">${p.stock??0}</span>
+            <span style="color:var(--a-muted);font-size:0.75rem"> units</span>
+            ${stockBar(p.stock??0)}
+          </td>
+          <td><span class="stock-badge ${stockClass(p.stock??0)}">${stockLabel(p.stock??0)}</span></td>
+        </tr>`).join('') :
+        '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--a-muted)"><i class="fas fa-check-circle" style="color:#2E7D32;margin-right:8px"></i>All products are well-stocked!</td></tr>';
+
+      // Product Overview (all, color-coded stock)
+      const overview = productDocs.slice(0, 10);
+      document.getElementById('productsBody').innerHTML = overview.length ? overview.map(p => `
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:12px">
+              <img class="table-img" src="${p.image||''}" alt="${p.name}" onerror="this.style.background='var(--a-bg)';this.removeAttribute('src')">
+              <div>
+                <div class="table-name">${p.name}</div>
+                <div class="table-sub">${p.size||''}</div>
+              </div>
+            </div>
+          </td>
+          <td style="text-transform:capitalize">${p.category||'—'}</td>
+          <td style="font-weight:700;color:var(--a-pink)">₱${(p.price||0).toLocaleString()}</td>
+          <td>${p.badge ? `<span class="badge badge-${p.badge}">${capitalize(p.badge)}</span>` : '<span style="color:var(--a-muted)">—</span>'}</td>
+          <td>
+            <span class="stock-badge ${stockClass(p.stock??0)}">${p.stock??0} units</span>
+            ${stockBar(p.stock??0)}
+          </td>
+        </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--a-muted)">No products yet. <a href="products.html" style="color:var(--a-pink)">Add your first product</a></td></tr>';
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+</script>
+</body>
+</html>

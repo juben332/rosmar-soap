@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — Habibi Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__brand">
+      <img src="../images/logo.png" alt="Logo" class="sidebar__brand-logo" onerror="this.style.display='none'">
+      <div class="sidebar__brand-name">Habibi<span>.</span></div>
+    </div>
+    <nav class="sidebar__nav">
+      <div class="sidebar__section">Main</div>
+      <a href="index.html" class="sidebar__link"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="products.html" class="sidebar__link active"><i class="fas fa-box-open"></i> Products</a>
+      <a href="orders.html" class="sidebar__link"><i class="fas fa-receipt"></i> Orders</a>
+      <div class="sidebar__section">Marketing</div>
+      <a href="subscribers.html" class="sidebar__link"><i class="fas fa-envelope"></i> Subscribers</a>
+      <div class="sidebar__section">Settings</div>
+      <a href="../index.html" class="sidebar__link" target="_blank"><i class="fas fa-external-link-alt"></i> View Website</a>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="sidebar__user-avatar" id="userAvatar">A</div>
+        <div>
+          <div class="sidebar__user-name" id="userEmail">Admin</div>
+          <div class="sidebar__user-role">Administrator</div>
+        </div>
+      </div>
+      <button class="sidebar__logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="admin-main">
+    <header class="topbar">
+      <div class="topbar__title">Products</div>
+      <div class="topbar__right">
+        <button class="topbar__btn topbar__btn--ghost" id="seedBtn"><i class="fas fa-database"></i> Seed Default Products</button>
+        <button class="topbar__btn topbar__btn--primary" id="addProductBtn"><i class="fas fa-plus"></i> Add Product</button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div class="panel">
+        <div class="panel__head">
+          <div class="panel__title">All Products <span id="productCount" style="font-size:0.8rem;color:var(--a-muted);font-family:var(--sans);font-weight:400"></span></div>
+          <div class="toolbar" style="margin:0">
+            <div class="search-wrap" style="min-width:180px">
+              <i class="fas fa-search"></i>
+              <input type="text" class="search-input" id="searchInput" placeholder="Search products...">
+            </div>
+            <select class="filter-select" id="categoryFilter">
+              <option value="">All Categories</option>
+              <option value="cleanser">Cleanser</option>
+              <option value="toner">Toner</option>
+              <option value="serum">Serum</option>
+              <option value="moisturizer">Moisturizer</option>
+              <option value="treatment">Treatment</option>
+              <option value="spf">Sun Protection</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Badge</th>
+                <th>Stock</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productsBody">
+              <tr class="loading-row"><td colspan="6"><span class="spinner"></span> Loading products...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <span id="paginationInfo">Showing 0 products</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add / Edit Modal -->
+<div class="modal-backdrop" id="productModal">
+  <div class="modal">
+    <div class="modal__head">
+      <h3 class="modal__title" id="modalTitle">Add Product</h3>
+      <button class="modal__close" id="closeModal"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal__body">
+      <form id="productForm">
+        <input type="hidden" id="productId">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Product Name *</label>
+            <input type="text" class="form-input" id="pName" placeholder="e.g. Luminous Gel Cleanser" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Category *</label>
+            <select class="form-select" id="pCategory" required>
+              <option value="">Select category</option>
+              <option value="cleanser">Cleanser</option>
+              <option value="toner">Toner</option>
+              <option value="serum">Serum</option>
+              <option value="moisturizer">Moisturizer</option>
+              <option value="treatment">Treatment</option>
+              <option value="spf">Sun Protection</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Price (₱) *</label>
+            <input type="number" class="form-input" id="pPrice" placeholder="890" min="0" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Size / Volume</label>
+            <input type="text" class="form-input" id="pSize" placeholder="e.g. 30ml, 150ml">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Short Benefit *</label>
+          <input type="text" class="form-input" id="pBenefit" placeholder="e.g. Deeply cleanses & brightens dull skin" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-textarea" id="pDescription" placeholder="Full product description..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Product Image</label>
+          <div style="display:flex;gap:10px;align-items:center">
+            <input type="url" class="form-input" id="pImage" placeholder="https://... or upload below">
+            <label for="imgUpload" id="uploadLabel" style="cursor:pointer;white-space:nowrap;padding:0 16px;height:42px;display:flex;align-items:center;gap:8px;background:var(--a-card);border:1px solid var(--a-border);border-radius:8px;font-size:0.83rem;font-weight:500;color:var(--a-text);transition:background 0.2s" onmouseover="this.style.background='var(--a-bg)'" onmouseout="this.style.background='var(--a-card)'">
+              <i class="fas fa-upload" style="color:var(--a-pink)"></i> Upload
+            </label>
+            <input type="file" id="imgUpload" accept="image/*" style="display:none">
+          </div>
+          <div id="uploadStatus" style="margin-top:8px;font-size:0.8rem;display:none"></div>
+          <div id="imgPreview" style="margin-top:10px;display:none">
+            <img id="imgPreviewImg" src="" alt="Preview" style="max-height:120px;border-radius:8px;border:1px solid var(--a-border);object-fit:cover">
+          </div>
+          <span class="form-hint">Upload a photo from your device or paste an image URL</span>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Badge</label>
+            <select class="form-select" id="pBadge">
+              <option value="">No badge</option>
+              <option value="new">New</option>
+              <option value="best">Bestseller</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Stock Quantity</label>
+            <input type="number" class="form-input" id="pQuantity" placeholder="e.g. 50" min="0" value="50">
+            <span class="form-hint">Set to 0 to mark as out of stock</span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal__foot">
+      <button class="btn btn-secondary" id="cancelModal">Cancel</button>
+      <button class="btn btn-primary" id="saveProduct"><i class="fas fa-save"></i> Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-backdrop" id="deleteModal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal__head">
+      <h3 class="modal__title">Delete Product</h3>
+      <button class="modal__close" id="closeDelete"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal__body">
+      <p style="color:var(--a-muted)">Are you sure you want to delete <strong id="deleteProductName" style="color:var(--a-text)"></strong>? This action cannot be undone.</p>
+    </div>
+    <div class="modal__foot">
+      <button class="btn btn-secondary" id="cancelDelete">Cancel</button>
+      <button class="btn btn-danger" id="confirmDelete"><i class="fas fa-trash"></i> Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="a-toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
+
+<script type="module">
+  import { auth, db, isAdmin } from '../js/firebase-config.js';
+  import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    collection, getDocs, addDoc, updateDoc, deleteDoc,
+    doc, serverTimestamp, query, orderBy
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  let allProducts = [], deleteTargetId = null;
+
+  async function logActivity(action, detail, category = 'product') {
+    try {
+      await addDoc(collection(db, 'activityLog'), {
+        action, detail, category,
+        adminEmail: auth.currentUser?.email || 'admin',
+        timestamp: serverTimestamp()
+      });
+    } catch (_) {}
+  }
+
+  // Auth guard — admin only
+  onAuthStateChanged(auth, user => {
+    if (!user) { window.location.href = '../login.html'; return; }
+    if (!isAdmin(user)) { window.location.href = '../login.html?error=unauthorized'; return; }
+    document.getElementById('userEmail').textContent = user.email;
+    document.getElementById('userAvatar').textContent = user.email[0].toUpperCase();
+    loadProducts();
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => { await signOut(auth); window.location.href = '../login.html'; });
+
+  // Load products
+  async function loadProducts() {
+    try {
+      const snap = await getDocs(query(collection(db, 'products'), orderBy('createdAt', 'desc')));
+      allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderProducts(allProducts);
+    } catch (e) {
+      renderProducts([]);
+    }
+  }
+
+  function stockClass(stock) {
+    if (stock == null || stock === 0) return 'stock-out';
+    if (stock <= 5) return 'stock-low';
+    return 'stock-ok';
+  }
+  function stockLabel(stock) {
+    if (stock == null || stock === 0) return 'Out of Stock';
+    if (stock <= 5) return 'Low Stock';
+    return 'In Stock';
+  }
+
+  function renderProducts(products) {
+    document.getElementById('productCount').textContent = `(${products.length})`;
+    document.getElementById('paginationInfo').textContent = `Showing ${products.length} product${products.length !== 1 ? 's' : ''}`;
+    const body = document.getElementById('productsBody');
+    if (!products.length) {
+      body.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fas fa-box-open"></i><h3>No products yet</h3><p>Click "Add Product" to get started.</p></div></td></tr>`;
+      return;
+    }
+    body.innerHTML = products.map(p => {
+      const stock = p.stock ?? 0;
+      const sc = stockClass(stock);
+      const sl = stockLabel(stock);
+      return `
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:12px">
+            <img class="table-img" src="${p.image||''}" alt="${p.name}" onerror="this.style.background='var(--a-bg)';this.removeAttribute('src')">
+            <div>
+              <div class="table-name">${p.name}</div>
+              <div class="table-sub">${p.benefit||''}</div>
+            </div>
+          </div>
+        </td>
+        <td style="text-transform:capitalize">${p.category||'—'}</td>
+        <td style="font-weight:700;color:var(--a-pink)">₱${(p.price||0).toLocaleString()}</td>
+        <td>${p.badge ? `<span class="badge badge-${p.badge}">${capitalize(p.badge)}</span>` : '<span style="color:var(--a-muted)">—</span>'}</td>
+        <td>
+          <span class="stock-badge ${sc}">${sl}</span>
+          <div class="qty-adjust" style="margin-top:6px">
+            <button class="btn-icon" title="Decrease stock" onclick="adjustStock('${p.id}', -1)"><i class="fas fa-minus"></i></button>
+            <span class="qty-adjust__val" id="stockVal-${p.id}">${stock}</span>
+            <button class="btn-icon" title="Increase stock" onclick="adjustStock('${p.id}', 1)"><i class="fas fa-plus"></i></button>
+          </div>
+        </td>
+        <td>
+          <div class="action-btns">
+            <button class="btn-icon edit" title="Edit" onclick="editProduct('${p.id}')"><i class="fas fa-pen"></i></button>
+            <button class="btn-icon del" title="Delete" onclick="deleteProduct('${p.id}','${p.name.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Search & filter
+  document.getElementById('searchInput').addEventListener('input', filterProducts);
+  document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+  function filterProducts() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const cat = document.getElementById('categoryFilter').value;
+    const filtered = allProducts.filter(p =>
+      (!q || p.name?.toLowerCase().includes(q) || p.benefit?.toLowerCase().includes(q)) &&
+      (!cat || p.category === cat)
+    );
+    renderProducts(filtered);
+  }
+
+  // Modal open/close
+  const modal = document.getElementById('productModal');
+  document.getElementById('addProductBtn').addEventListener('click', () => openModal());
+  document.getElementById('closeModal').addEventListener('click', closeModal);
+  document.getElementById('cancelModal').addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+  function openModal(product = null) {
+    document.getElementById('modalTitle').textContent = product ? 'Edit Product' : 'Add Product';
+    document.getElementById('productId').value = product?.id || '';
+    document.getElementById('pName').value = product?.name || '';
+    document.getElementById('pCategory').value = product?.category || '';
+    document.getElementById('pPrice').value = product?.price || '';
+    document.getElementById('pSize').value = product?.size || '';
+    document.getElementById('pBenefit').value = product?.benefit || '';
+    document.getElementById('pDescription').value = product?.description || '';
+    document.getElementById('pImage').value = product?.image || '';
+    document.getElementById('pBadge').value = product?.badge || '';
+    document.getElementById('pQuantity').value = product?.stock != null ? product.stock : 50;
+    // Reset upload UI
+    document.getElementById('uploadStatus').style.display = 'none';
+    const prev = document.getElementById('imgPreview');
+    const prevImg = document.getElementById('imgPreviewImg');
+    if (product?.image) { prevImg.src = product.image; prev.style.display = 'block'; }
+    else { prev.style.display = 'none'; }
+    modal.classList.add('open');
+  }
+  function closeModal() { modal.classList.remove('open'); }
+
+  // Edit (exposed to global for onclick)
+  window.editProduct = (id) => {
+    const p = allProducts.find(p => p.id === id);
+    if (p) openModal(p);
+  };
+
+  // Save product
+  document.getElementById('saveProduct').addEventListener('click', async () => {
+    const id       = document.getElementById('productId').value;
+    const quantity = parseInt(document.getElementById('pQuantity').value) || 0;
+    const data = {
+      name:        document.getElementById('pName').value.trim(),
+      category:    document.getElementById('pCategory').value,
+      price:       +document.getElementById('pPrice').value,
+      size:        document.getElementById('pSize').value.trim(),
+      benefit:     document.getElementById('pBenefit').value.trim(),
+      description: document.getElementById('pDescription').value.trim(),
+      image:       document.getElementById('pImage').value.trim(),
+      badge:       document.getElementById('pBadge').value,
+      stock:       quantity,
+      inStock:     quantity > 0,
+      updatedAt:   serverTimestamp(),
+    };
+    if (!data.name || !data.category || !data.price) { showToast('Please fill in all required fields.', 'error'); return; }
+
+    const btn = document.getElementById('saveProduct');
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Saving...';
+
+    try {
+      if (id) {
+        await updateDoc(doc(db, 'products', id), data);
+        await logActivity(`Product edited: ${data.name}`, `Price: ₱${data.price.toLocaleString()} | Stock: ${data.stock} | Category: ${data.category}`);
+        showToast('Product updated successfully!', 'success');
+      } else {
+        data.createdAt = serverTimestamp();
+        await addDoc(collection(db, 'products'), data);
+        await logActivity(`Product added: ${data.name}`, `Price: ₱${data.price.toLocaleString()} | Stock: ${data.stock} | Category: ${data.category}`);
+        showToast('Product added successfully!', 'success');
+      }
+      closeModal();
+      await loadProducts();
+    } catch (e) {
+      showToast('Error saving product: ' + e.message, 'error');
+    }
+    btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Save Product';
+  });
+
+  // Delete
+  const deleteModal = document.getElementById('deleteModal');
+  window.deleteProduct = (id, name) => {
+    deleteTargetId = id;
+    document.getElementById('deleteProductName').textContent = name;
+    deleteModal.classList.add('open');
+  };
+  document.getElementById('closeDelete').addEventListener('click', () => deleteModal.classList.remove('open'));
+  document.getElementById('cancelDelete').addEventListener('click', () => deleteModal.classList.remove('open'));
+  document.getElementById('confirmDelete').addEventListener('click', async () => {
+    if (!deleteTargetId) return;
+    try {
+      const product = allProducts.find(p => p.id === deleteTargetId);
+      await deleteDoc(doc(db, 'products', deleteTargetId));
+      await logActivity(`Product deleted: ${product?.name || deleteTargetId}`, `Category: ${product?.category || '—'} | Price: ₱${(product?.price||0).toLocaleString()}`);
+      deleteModal.classList.remove('open');
+      showToast('Product deleted.', 'info');
+      await loadProducts();
+    } catch (e) { showToast('Error: ' + e.message, 'error'); }
+  });
+
+  // Seed default products
+  document.getElementById('seedBtn').addEventListener('click', async () => {
+    if (!confirm('This will add the default Habibi products to Firestore. Continue?')) return;
+    const defaults = [
+      { name:'Luminous Gel Cleanser',         category:'cleanser',    price:890,  size:'150ml', benefit:'Deeply cleanses & brightens dull skin',          image:'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&auto=format&fit=crop&q=80',    badge:'best', stock:50, inStock:true },
+      { name:'Milk & Honey Oil Cleanser',      category:'cleanser',    price:1190, size:'100ml', benefit:'Melts makeup & nourishes deeply',                image:'https://images.unsplash.com/photo-1556228841-a3c527ebefe5?w=600&auto=format&fit=crop&q=80',    badge:'',     stock:40, inStock:true },
+      { name:'Rose Water Balancing Toner',     category:'toner',       price:790,  size:'200ml', benefit:'Balances pH & preps skin for serums',            image:'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600&auto=format&fit=crop&q=80',  badge:'',     stock:60, inStock:true },
+      { name:'Niacinamide Clarity Toner',      category:'toner',       price:950,  size:'200ml', benefit:'Minimises pores & controls oil',                 image:'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600&h=601&auto=format&fit=crop&q=80', badge:'new', stock:35, inStock:true },
+      { name:'24K Gold Radiance Serum',        category:'serum',       price:1590, size:'30ml',  benefit:'Firms, brightens & reduces dark spots',          image:'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&auto=format&fit=crop&q=80',    badge:'new',  stock:25, inStock:true },
+      { name:'Vitamin C Brightening Serum',    category:'serum',       price:1390, size:'30ml',  benefit:'Fades hyperpigmentation & evens skin tone',      image:'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=600&h=601&auto=format&fit=crop&q=80', badge:'',   stock:30, inStock:true },
+      { name:'Desert Rose Moisturizer',        category:'moisturizer', price:1290, size:'50ml',  benefit:'Intensely hydrates & softens texture',           image:'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=600&auto=format&fit=crop&q=80',    badge:'best', stock:45, inStock:true },
+      { name:'Oud & Shea Night Butter',        category:'moisturizer', price:1490, size:'50ml',  benefit:'Rich overnight repair & restoration',            image:'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=601&auto=format&fit=crop&q=80',  badge:'',     stock:20, inStock:true },
+      { name:'Saffron Eye Revival Cream',      category:'treatment',   price:1890, size:'15ml',  benefit:'Reduces dark circles & puffiness',               image:'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&auto=format&fit=crop&q=80',    badge:'new',  stock:15, inStock:true },
+      { name:'Gold Infusion Face Mask',        category:'treatment',   price:2490, size:'75ml',  benefit:'Instant luminosity & deep detox',                image:'https://images.unsplash.com/photo-1570194065650-d99fb4abbd90?w=600&h=601&auto=format&fit=crop&q=80', badge:'',   stock:18, inStock:true },
+      { name:'Veil SPF 50+ Sunscreen Fluid',   category:'spf',         price:990,  size:'50ml',  benefit:'Invisible protection with a dewy finish',        image:'https://images.unsplash.com/photo-1570194065650-d99fb4abbd90?w=600&auto=format&fit=crop&q=80',    badge:'best', stock:55, inStock:true },
+      { name:'Tinted SPF 40 Skin Tint',        category:'spf',         price:1190, size:'30ml',  benefit:'Sheer coverage with full sun protection',        image:'https://images.unsplash.com/photo-1556228841-a3c527ebefe5?w=600&h=601&auto=format&fit=crop&q=80',  badge:'',     stock:28, inStock:true },
+    ];
+    try {
+      for (const p of defaults) await addDoc(collection(db, 'products'), { ...p, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+      showToast(`${defaults.length} products seeded!`, 'success');
+      await loadProducts();
+    } catch (e) { showToast('Error seeding: ' + e.message, 'error'); }
+  });
+
+  // Toast
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+    t.className = `a-toast ${type}`;
+    t.innerHTML = `<i class="fas ${icon}"></i> <span>${msg}</span>`;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+
+  // Quick stock adjust (inline +/-)
+  window.adjustStock = async (id, delta) => {
+    const product = allProducts.find(p => p.id === id);
+    if (!product) return;
+    const oldStock = product.stock ?? 0;
+    const newStock = Math.max(0, oldStock + delta);
+    if (newStock === oldStock) return; // already at 0, no change needed
+    const valEl = document.getElementById(`stockVal-${id}`);
+    if (valEl) valEl.textContent = newStock;
+    product.stock = newStock;
+    product.inStock = newStock > 0;
+    try {
+      await updateDoc(doc(db, 'products', id), { stock: newStock, inStock: newStock > 0, updatedAt: serverTimestamp() });
+      await logActivity(`Stock updated: ${product.name}`, `Stock: ${oldStock} → ${newStock}`, 'stock');
+      showToast(`Stock updated to ${newStock}`, 'success');
+      // Update badge color in DOM
+      const row = valEl?.closest('tr');
+      if (row) {
+        const badge = row.querySelector('.stock-badge');
+        if (badge) {
+          badge.className = `stock-badge ${stockClass(newStock)}`;
+          badge.textContent = stockLabel(newStock);
+        }
+      }
+    } catch (e) {
+      showToast('Error updating stock: ' + e.message, 'error');
+      // Revert local state
+      product.stock = oldStock;
+      if (valEl) valEl.textContent = oldStock;
+    }
+  };
+
+  // Cloudinary image upload
+  document.getElementById('imgUpload').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const statusEl   = document.getElementById('uploadStatus');
+    const previewEl  = document.getElementById('imgPreview');
+    const previewImg = document.getElementById('imgPreviewImg');
+    const label      = document.getElementById('uploadLabel');
+
+    statusEl.style.display = 'block';
+    statusEl.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:var(--a-pink)"></i> Uploading...';
+    label.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:var(--a-pink)"></i> Uploading...';
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'htxesrcz');
+
+      const res  = await fetch('https://api.cloudinary.com/v1_1/dxazm18iv/image/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+
+      if (data.secure_url) {
+        const url = data.secure_url;
+        document.getElementById('pImage').value = url;
+        previewImg.src = url;
+        previewEl.style.display = 'block';
+        statusEl.innerHTML = '<i class="fas fa-check-circle" style="color:#2ecc71"></i> Image uploaded successfully!';
+      } else {
+        statusEl.innerHTML = '<i class="fas fa-exclamation-circle" style="color:#e74c3c"></i> Upload failed: ' + (data.error?.message || 'Try again.');
+      }
+    } catch (err) {
+      statusEl.innerHTML = '<i class="fas fa-exclamation-circle" style="color:#e74c3c"></i> Upload error: ' + err.message;
+    }
+
+    label.innerHTML = '<i class="fas fa-upload" style="color:var(--a-pink)"></i> Upload';
+    e.target.value = ''; // reset file input
+  });
+
+  // Show preview when URL is pasted manually
+  document.getElementById('pImage').addEventListener('change', () => {
+    const url = document.getElementById('pImage').value.trim();
+    const previewEl  = document.getElementById('imgPreview');
+    const previewImg = document.getElementById('imgPreviewImg');
+    if (url) { previewImg.src = url; previewEl.style.display = 'block'; }
+    else { previewEl.style.display = 'none'; }
+  });
+</script>
+</body>
+</html>

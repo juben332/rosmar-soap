@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habibi Skincare — Radiance Rooted in Nature</title>
+  <meta name="description" content="Premium natural skincare crafted in Davao City, Philippines. Inspired by luxurious Middle Eastern beauty rituals and the finest natural ingredients for glowing, radiant skin.">
+  <meta property="og:title" content="Habibi Skincare — Radiance Rooted in Nature">
+  <meta property="og:description" content="Premium natural skincare for timeless beauty.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="pageLoader">
+  <img src="images/logo.png" alt="Habibi Skincare" class="loader-logo">
+  <div class="loader-dots"><span></span><span></span><span></span></div>
+</div>
+
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════ -->
+  <nav class="nav nav--scrolled" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo"><img src="images/logo.png" alt="Habibi Skincare Logo" class="nav__logo-img"><span class="nav__logo-text"><span class="nav__logo-main">Habibi <em>Skin</em></span><span class="nav__logo-sub">Essentials</span></span></a>
+
+      <ul class="nav__links">
+        <li><a href="index.html" class="nav__link" style="color:var(--gold)">Home</a></li>
+        <li><a href="collection.html" class="nav__link">Collection</a></li>
+        <li><a href="ourstory.html" class="nav__link">Our Story</a></li>
+        <li><a href="routine.html" class="nav__link">Routine</a></li>
+        <li><a href="contact.html" class="nav__link">Contact</a></li>
+      </ul>
+
+      <div class="nav__actions"><div class="nav__contact"><a href="mailto:ayaocris@gmail.com" class="nav__contact-link"><i class="fas fa-envelope"></i> ayaocris@gmail.com</a><span class="nav__contact-divider"></span><div class="nav__contact-socials"><a href="https://www.instagram.com/crissa_ayao/" class="nav__contact-social" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a><a href="https://www.tiktok.com/@crishabibi" class="nav__contact-social" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a><a href="https://www.facebook.com/profile.php?id=61564976284384" class="nav__contact-social" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a></div></div>
+        
+        <button class="nav__hamburger" aria-label="Menu" id="burger">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="nav__mobile" id="mobileMenu">
+    <a href="index.html" class="nav__link">Home</a>
+    <a href="collection.html" class="nav__link">Collection</a>
+    <a href="ourstory.html" class="nav__link">Our Story</a>
+    <a href="routine.html" class="nav__link">Routine</a>
+    <a href="contact.html" class="nav__link">Contact</a>
+    <a href="collection.html" class="btn btn-primary mt-24">Shop Now</a>
+  </div>
+
+  <!-- ═══ HERO ══════════════════════════════════════════════════ -->
+  <section class="about-hero">
+    <div class="about-hero__img" id="homeHeroImg"></div>
+    <div style="position:relative;z-index:2;width:100%;padding:0 40px">
+      <div class="hero-content" style="max-width:480px;text-align:left;margin-left:240px">
+        <span class="eyebrow" style="margin-bottom:18px;justify-content:flex-start">Est. 2024 · Davao City, Philippines</span>
+        <h1 style="margin-bottom:24px">Radiance<br><em style="font-style:italic;color:var(--rose)">Rooted in Nature</em></h1>
+        <p style="font-size:1.05rem;color:var(--charcoal);margin-bottom:36px;line-height:1.75;max-width:460px">Premium natural skincare crafted for timeless beauty — inspired by the rich traditions of Middle Eastern self-care rituals.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <a href="collection.html" class="btn btn-primary btn-lg">Shop Now</a>
+          <a href="routine.html" class="btn btn-outline-dark btn-lg">Discover Your Routine</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ MARQUEE STRIP ════════════════════════════════════════ -->
+  <div style="background:var(--gold);padding:14px 0;overflow:hidden;white-space:nowrap;">
+    <div style="display:inline-flex;gap:48px;animation:marquee 22s linear infinite;font-size:0.75rem;font-weight:600;letter-spacing:0.18em;color:#fff;text-transform:uppercase;">
+      <span>100% Natural Ingredients</span><span>✦</span>
+      <span>Dermatologist Tested</span><span>✦</span>
+      <span>Luxury Formulations</span><span>✦</span>
+      <span>Eco-Friendly Packaging</span><span>✦</span>
+      <span>100% Natural Ingredients</span><span>✦</span>
+      <span>Dermatologist Tested</span><span>✦</span>
+      <span>Luxury Formulations</span><span>✦</span>
+      <span>Eco-Friendly Packaging</span><span>✦</span>
+    </div>
+  </div>
+  <style>
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  </style>
+
+  <!-- ═══ BRAND STORY ═══════════════════════════════════════════ -->
+  <section class="brand-story section">
+    <div class="brand-story__bg"></div>
+    <div class="container">
+      <div class="grid-2">
+        <div class="brand-story__img-wrap anim">
+          <div id="storyImg" style="position:absolute;inset:0;background-size:cover;background-position:center;background-color:var(--sand);transition:opacity 0.8s ease;opacity:0"></div>
+          <div class="brand-story__badge">
+            <span class="brand-story__badge-n">100%</span>
+            <span class="brand-story__badge-t">Natural</span>
+          </div>
+        </div>
+
+        <div class="brand-story__text anim d2">
+          <span class="eyebrow">Our Story</span>
+          <h2 class="section-title">Where Luxury Meets<br>Pure Nature</h2>
+          <div class="divider--left divider"></div>
+          <p>Habibi Skincare was born from a simple yet profound belief: that true beauty is nurtured, not manufactured. Founded in the heart of Davao City, we blend the lush botanicals of the Philippine tropics with time-honoured Middle Eastern beauty rituals.</p>
+          <p style="margin-top:16px;">Every product we create is a love letter to your skin — formulated with the purest ingredients, free from harmful chemicals, and crafted with the kind of care that only comes from deep devotion.</p>
+
+          <div class="brand-story__quote">
+            <p>"Habibi" — an Arabic word meaning "my love." Because every ritual should feel like an act of love for yourself.</p>
+          </div>
+
+          <a href="ourstory.html" class="btn btn-outline-dark mt-8">Read Our Full Story</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══ BENEFITS ══════════════════════════════════════════════ -->
+  <section class="benefits section">
+    <div class="container">
+      <div class="section-header anim">
+        <span class="eyebrow">Why Habibi</span>
+        <h2>A Promise to Your Skin</h2>
+        <p>We hold ourselves to a higher standard — because your skin deserves nothing less.</p>
+      </div>
+      <div class="grid-4">
+        <div class="benefit-card anim d1">
+          <div class="benefit-icon"><i class="fas fa-leaf"></i></div>
+          <h3>100% Natural Ingredients</h3>
+          <p>Every formula is built from plant-derived, ethically sourced actives — nothing synthetic, nothing hidden.</p>
+        </div>
+        <div class="benefit-card anim d2">
+          <div class="benefit-icon"><i class="fas fa-flask"></i></div>
+          <h3>Dermatologist Tested</h3>
+          <p>Clinically validated for safety and efficacy across all skin tones and types, including sensitive skin.</p>
+        </div>
+        <div class="benefit-card anim d3">
+          <div class="benefit-icon"><i class="fas fa-gem"></i></div>
+          <h3>Luxury Formulations</h3>
+          <p>Rare actives like saffron, oud extract & 24K gold — the finest ingredients for extraordinary results.</p>
+        </div>
+        <div class="benefit-card anim d4">
+          <div class="benefit-icon"><i class="fas fa-seedling"></i></div>
+          <h3>Eco-Friendly Packaging</h3>
+          <p>Biodegradable, recyclable, and minimal. Beautiful on the outside, responsible on the inside.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ══════════════════════════════════════════ -->
+  <section class="section section--beige">
+    <div class="container">
+      <div class="section-header anim">
+        <span class="eyebrow">Glow Stories</span>
+        <h2>What Our Community Says</h2>
+        <p>Real results from real people who chose to glow naturally.</p>
+      </div>
+      <div class="grid-3">
+
+        <div class="testimonial-card anim d1">
+          <div class="testimonial-stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+          </div>
+          <p>"Pagkatapos ng dalawang linggo ng paggamit, hindi ko pa nakita ang aking balat na ganito kaganda. Lagi na akong tinatanong ng mga kaibigan ko kung ano ang aking ginagawa. Ang sagot? Habibi."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80"
+                   alt="Maria S." onerror="this.parentElement.style.background='var(--sand)'">
+            </div>
+            <div>
+              <div class="testimonial-name">Maria Santos</div>
+              <div class="testimonial-loc">Davao City, Philippines</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card anim d2">
+          <div class="testimonial-stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+          </div>
+          <p>"Maselang balat ang mayroon ako at marami na akong nasubukan. Ang moisturizer ng Habibi ang unang produktong nagbibigay ng malalim na hydration nang hindi nagdudulot ng pimples. Pakiramdam ko ay purong luho."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80"
+                   alt="Jasmine L." onerror="this.parentElement.style.background='var(--sand)'">
+            </div>
+            <div>
+              <div class="testimonial-name">Jasmine Lim</div>
+              <div class="testimonial-loc">Cebu City, Philippines</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card anim d3">
+          <div class="testimonial-stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+          </div>
+          <p>"Kahit ang packaging pa lamang ay obra maestra na. Pero ang dahilan kung bakit ako bumabalik ay ang resulta — mas malambot, mas malinis, at talagang nagliliwanag ang aking balat. Hindi na maaaring wala ang Habibi sa aking routine."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format&fit=crop&q=80"
+                   alt="Nicole R." onerror="this.parentElement.style.background='var(--sand)'">
+            </div>
+            <div>
+              <div class="testimonial-name">Nicole Reyes</div>
+              <div class="testimonial-loc">Manila, Philippines</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ROUTINE ════════════════════════════════════════════════ -->
+  <section class="section" id="routine">
+    <div class="container">
+      <div class="section-header anim">
+        <span class="eyebrow">The Habibi Method</span>
+        <h2>Your 5-Step Glow Ritual</h2>
+        <p>Simple, intentional, and deeply effective. A routine you'll actually look forward to.</p>
+      </div>
+
+      <div class="routine__steps">
+        <div class="routine__connector"></div>
+
+        <div class="routine__step anim d1">
+          <div class="routine__num">01</div>
+          <div class="routine__icon"><i class="fas fa-tint"></i></div>
+          <h4>Cleanse</h4>
+          <p>Gently dissolve impurities with our gel cleanser, leaving skin fresh and prepped.</p>
+        </div>
+        <div class="routine__step anim d2">
+          <div class="routine__num">02</div>
+          <div class="routine__icon"><i class="fas fa-wind"></i></div>
+          <h4>Tone</h4>
+          <p>Balance your skin's pH with rose water toner to enhance absorption.</p>
+        </div>
+        <div class="routine__step anim d3">
+          <div class="routine__num">03</div>
+          <div class="routine__icon"><i class="fas fa-magic"></i></div>
+          <h4>Treat</h4>
+          <p>Apply targeted serums to address dark spots, fine lines, or uneven tone.</p>
+        </div>
+        <div class="routine__step anim d4">
+          <div class="routine__num">04</div>
+          <div class="routine__icon"><i class="fas fa-water"></i></div>
+          <h4>Moisturize</h4>
+          <p>Lock in hydration with our Desert Rose cream for an all-day dewy glow.</p>
+        </div>
+        <div class="routine__step anim d5">
+          <div class="routine__num">05</div>
+          <div class="routine__icon"><i class="fas fa-sun"></i></div>
+          <h4>Protect</h4>
+          <p>Finish with Veil SPF 50+ to shield your glow from sun damage every day.</p>
+        </div>
+      </div>
+
+      <div class="text-center anim" style="margin-top:56px;">
+        <a href="collection.html" class="btn btn-primary btn-lg">Build Your Routine</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer__top">
+        <div>
+          
+          <p class="footer__tagline">Premium natural skincare rooted in nature, inspired by love — crafted in Davao City, Philippines.</p>
+          <div class="footer__socials">
+            <a href="#" class="footer__social" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="footer__social" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.facebook.com/profile.php?id=61564976284384" class="footer__social" aria-label="Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="footer__social" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer__col-title">Shop</h4>
+          <ul class="footer__links">
+            <li><a href="collection.html" class="footer__link">All Products</a></li>
+            <li><a href="collection.html" class="footer__link">Cleansers</a></li>
+            <li><a href="collection.html" class="footer__link">Serums</a></li>
+            <li><a href="collection.html" class="footer__link">Moisturizers</a></li>
+            <li><a href="collection.html" class="footer__link">Sun Protection</a></li>
+            <li><a href="collection.html" class="footer__link">Gift Sets</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer__col-title">Company</h4>
+          <ul class="footer__links">
+            <li><a href="ourstory.html" class="footer__link">Our Story</a></li>
+            <li><a href="#" class="footer__link">Ingredients</a></li>
+            <li><a href="#" class="footer__link">Sustainability</a></li>
+            <li><a href="#" class="footer__link">Press & Media</a></li>
+            <li><a href="#" class="footer__link">Careers</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer__col-title">Contact Us</h4>
+          <div class="footer__contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Davao City, Davao del Sur,<br>Philippines 8000</span>
+          </div>
+          <div class="footer__contact-item">
+            <i class="fas fa-envelope"></i>
+            <span>hello@habibiskincare.ph</span>
+          </div>
+          <div class="footer__contact-item">
+            <i class="fas fa-phone"></i>
+            <span>+63 (82) 000-0000</span>
+          </div>
+          <div class="footer__contact-item">
+            <i class="fas fa-clock"></i>
+            <span>Mon–Sat: 9AM – 6PM PHT</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copy">© 2024 Habibi Skincare. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Returns & Refunds</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+
+  <!-- Hero product image — load from Firestore -->
+  <script type="module">
+    import { db } from './js/firebase-config.js';
+    import { collection, getDocs, query, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    try {
+      const snap = await getDocs(query(collection(db, 'products'), limit(12)));
+      const products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const withImg = products.filter(p => p.image && p.image.includes('cloudinary.com'));
+      const allWithImg = products.filter(p => p.image);
+
+      // Brand-story section — second Cloudinary product
+      const storyProduct = withImg[1] || withImg[0] || allWithImg[0];
+      if (storyProduct) {
+        const si = document.getElementById('storyImg');
+        si.style.backgroundImage = `url('${storyProduct.image}')`;
+        si.style.opacity = '1';
+      }
+    } catch (_) { /* stays empty if Firestore fails */ }
+  </script>
+
+
+</body>
+</html>

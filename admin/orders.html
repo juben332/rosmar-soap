@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders — Habibi Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <img src="../images/logo.png" alt="Logo" class="sidebar__brand-logo" onerror="this.style.display='none'">
+      <div class="sidebar__brand-name">Habibi<span>.</span></div>
+    </div>
+    <nav class="sidebar__nav">
+      <div class="sidebar__section">Main</div>
+      <a href="index.html" class="sidebar__link"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="products.html" class="sidebar__link"><i class="fas fa-box-open"></i> Products</a>
+      <a href="orders.html" class="sidebar__link active"><i class="fas fa-receipt"></i> Orders</a>
+      <div class="sidebar__section">Marketing</div>
+      <a href="subscribers.html" class="sidebar__link"><i class="fas fa-envelope"></i> Subscribers</a>
+      <div class="sidebar__section">Settings</div>
+      <a href="../index.html" class="sidebar__link" target="_blank"><i class="fas fa-external-link-alt"></i> View Website</a>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="sidebar__user-avatar" id="userAvatar">A</div>
+        <div>
+          <div class="sidebar__user-name" id="userEmail">Admin</div>
+          <div class="sidebar__user-role">Administrator</div>
+        </div>
+      </div>
+      <button class="sidebar__logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="admin-main">
+    <header class="topbar">
+      <div class="topbar__title">Orders</div>
+      <div class="topbar__right">
+        <span style="font-size:0.82rem;color:var(--a-muted)" id="orderSummary"></span>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- Status filter tabs -->
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+        <button class="topbar__btn topbar__btn--primary status-tab" data-status="">All Orders</button>
+        <button class="topbar__btn topbar__btn--ghost status-tab" data-status="pending">Pending</button>
+        <button class="topbar__btn topbar__btn--ghost status-tab" data-status="processing">Processing</button>
+        <button class="topbar__btn topbar__btn--ghost status-tab" data-status="shipped">Shipped</button>
+        <button class="topbar__btn topbar__btn--ghost status-tab" data-status="delivered">Delivered</button>
+        <button class="topbar__btn topbar__btn--ghost status-tab" data-status="cancelled">Cancelled</button>
+      </div>
+
+      <!-- Bulk Action Bar -->
+      <div id="bulkBar" style="display:none;align-items:center;gap:12px;background:var(--a-pink);color:#fff;padding:12px 20px;border-radius:12px;margin-bottom:16px;flex-wrap:wrap">
+        <span id="bulkCount" style="font-weight:700;font-size:0.9rem"></span>
+        <span style="opacity:0.6;font-size:0.82rem">selected</span>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <label style="font-size:0.82rem;font-weight:600">Set status:</label>
+          <select id="bulkStatus" style="padding:7px 12px;border-radius:8px;border:none;font-size:0.82rem;cursor:pointer">
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <button id="bulkApplyBtn" style="padding:7px 18px;background:#fff;color:var(--a-pink);border:none;border-radius:8px;font-weight:700;font-size:0.82rem;cursor:pointer">
+            <i class="fas fa-check"></i> Apply
+          </button>
+          <button id="bulkCancelBtn" style="padding:7px 14px;background:rgba(255,255,255,0.2);color:#fff;border:none;border-radius:8px;font-size:0.82rem;cursor:pointer">
+            Clear
+          </button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel__head">
+          <div class="panel__title">Order List</div>
+          <div class="search-wrap" style="width:220px">
+            <i class="fas fa-search"></i>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search by name or email...">
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:40px"><input type="checkbox" id="selectAll" title="Select all" style="cursor:pointer;width:16px;height:16px"></th>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Payment</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ordersBody">
+              <tr class="loading-row"><td colspan="9"><span class="spinner"></span> Loading orders...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <span id="paginationInfo" style="font-size:0.82rem;color:var(--a-muted)">Showing 0 orders</span>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+            <button id="prevPageBtn" class="topbar__btn topbar__btn--ghost" style="padding:6px 14px;font-size:0.82rem" disabled>
+              <i class="fas fa-chevron-left"></i> Prev
+            </button>
+            <span id="pageIndicator" style="font-size:0.82rem;font-weight:600;color:var(--a-text);min-width:90px;text-align:center">Page 1 of 1</span>
+            <button id="nextPageBtn" class="topbar__btn topbar__btn--ghost" style="padding:6px 14px;font-size:0.82rem" disabled>
+              Next <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order Detail Modal -->
+<div class="modal-backdrop" id="orderModal">
+  <div class="modal" style="max-width:620px">
+    <div class="modal__head">
+      <h3 class="modal__title" id="orderModalTitle">Order Details</h3>
+      <button class="modal__close" id="closeOrderModal"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal__body" id="orderModalBody"></div>
+    <div class="modal__foot">
+      <label style="font-size:0.82rem;font-weight:600;color:var(--a-text);margin-right:8px">Update Status:</label>
+      <select class="filter-select" id="statusSelect">
+        <option value="pending">Pending</option>
+        <option value="processing">Processing</option>
+        <option value="shipped">Shipped</option>
+        <option value="delivered">Delivered</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      <button class="btn btn-primary" id="updateStatusBtn" style="margin-left:auto"><i class="fas fa-check"></i> Update</button>
+    </div>
+  </div>
+</div>
+
+<div class="a-toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
+
+<script type="module">
+  import { auth, db, isAdmin } from '../js/firebase-config.js';
+  import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { collection, getDocs, updateDoc, addDoc, doc, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  let allOrders = [], currentOrderId = null, activeStatus = '';
+  let selectedIds = new Set();
+  const PAGE_SIZE = 10;
+  let currentPage = 1;
+
+  function getOrderCategory(status) {
+    const map = { pending:'order-pending', processing:'order-processing', shipped:'order-shipped', delivered:'order-delivered', cancelled:'order-cancelled' };
+    return map[status] || 'other';
+  }
+
+  async function logActivity(action, detail, category = 'other') {
+    try {
+      await addDoc(collection(db, 'activityLog'), {
+        action, detail, category,
+        adminEmail: auth.currentUser?.email || 'admin',
+        timestamp: serverTimestamp()
+      });
+    } catch (_) {}
+  }
+
+  // Auth guard — admin only
+  onAuthStateChanged(auth, user => {
+    if (!user) { window.location.href = '../login.html'; return; }
+    if (!isAdmin(user)) { window.location.href = '../login.html?error=unauthorized'; return; }
+    document.getElementById('userEmail').textContent = user.email;
+    document.getElementById('userAvatar').textContent = user.email[0].toUpperCase();
+    loadOrders();
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => { await signOut(auth); window.location.href = '../login.html'; });
+
+  async function loadOrders() {
+    try {
+      const snap = await getDocs(query(collection(db, 'orders'), orderBy('createdAt', 'desc')));
+      allOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const pending = allOrders.filter(o => o.status === 'pending').length;
+      const revenue = allOrders.filter(o => o.status === 'delivered').reduce((s,o) => s + (o.total||0), 0);
+      document.getElementById('orderSummary').textContent = `${allOrders.length} total · ${pending} pending · ₱${revenue.toLocaleString()} revenue`;
+      renderOrders();
+    } catch (e) { renderOrders(); }
+  }
+
+  function updateBulkBar() {
+    const bar = document.getElementById('bulkBar');
+    const count = document.getElementById('bulkCount');
+    if (selectedIds.size > 0) {
+      bar.style.display = 'flex';
+      count.textContent = selectedIds.size;
+    } else {
+      bar.style.display = 'none';
+    }
+  }
+
+  function dayKey(o) {
+    if (!o.createdAt?.seconds) return 'Unknown Date';
+    const d = new Date(o.createdAt.seconds * 1000);
+    return d.toLocaleDateString('en-PH', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+  }
+
+  function renderOrders() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = allOrders.filter(o => {
+      const matchStatus = !activeStatus || o.status === activeStatus;
+      const matchSearch = !q || o.customer?.name?.toLowerCase().includes(q) || o.customer?.email?.toLowerCase().includes(q) || o.id.includes(q);
+      return matchStatus && matchSearch;
+    });
+
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const start  = (currentPage - 1) * PAGE_SIZE;
+    const paged  = filtered.slice(start, start + PAGE_SIZE);
+
+    // Pagination info
+    const from = filtered.length ? start + 1 : 0;
+    const to   = Math.min(start + PAGE_SIZE, filtered.length);
+    document.getElementById('paginationInfo').textContent =
+      filtered.length ? `Showing ${from}–${to} of ${filtered.length} order${filtered.length !== 1 ? 's' : ''}` : 'No orders';
+
+    // Prev / Next buttons
+    document.getElementById('prevPageBtn').disabled = currentPage <= 1;
+    document.getElementById('nextPageBtn').disabled = currentPage >= totalPages;
+    document.getElementById('pageIndicator').textContent = `Page ${currentPage} of ${totalPages}`;
+
+    const body = document.getElementById('ordersBody');
+    if (!paged.length) {
+      body.innerHTML = `<tr><td colspan="9"><div class="empty-state"><i class="fas fa-receipt"></i><h3>No orders found</h3><p>Orders placed on your website will appear here.</p></div></td></tr>`;
+      updateSelectAllState([]);
+      updateBulkBar();
+      return;
+    }
+
+    // Group paged orders by day
+    let lastDay = null;
+    const rows = [];
+    paged.forEach(o => {
+      const day = dayKey(o);
+      if (day !== lastDay) {
+        rows.push(`<tr class="date-divider-row"><td colspan="9">
+          <span class="date-divider-label"><i class="fas fa-calendar-day"></i> ${day}</span>
+        </td></tr>`);
+        lastDay = day;
+      }
+      const ts      = o.createdAt?.seconds ? new Date(o.createdAt.seconds * 1000) : null;
+      const timeStr = ts ? ts.toLocaleTimeString('en-PH', {hour:'2-digit', minute:'2-digit'}) : '—';
+      const checked = selectedIds.has(o.id) ? 'checked' : '';
+      rows.push(`
+      <tr class="${selectedIds.has(o.id) ? 'row-selected' : ''}">
+        <td><input type="checkbox" class="row-check" data-id="${o.id}" ${checked} style="cursor:pointer;width:16px;height:16px"></td>
+        <td><div class="table-name">#${o.id.slice(-6).toUpperCase()}</div></td>
+        <td>
+          <div class="table-name">${o.customer?.name || 'Guest'}</div>
+          <div class="table-sub">${o.customer?.email || ''}</div>
+        </td>
+        <td style="color:var(--a-muted)">${o.items?.length || 0} item(s)</td>
+        <td style="font-weight:700;color:var(--a-pink)">₱${(o.total||0).toLocaleString()}</td>
+        <td style="text-transform:capitalize;font-size:0.82rem">${o.paymentMethod || 'COD'}</td>
+        <td style="font-size:0.8rem;color:var(--a-muted)">${timeStr}</td>
+        <td><span class="badge badge-${o.status||'pending'}">${capitalize(o.status||'pending')}</span></td>
+        <td>
+          <button class="btn-icon view" title="View" onclick="viewOrder('${o.id}')"><i class="fas fa-eye"></i></button>
+        </td>
+      </tr>`);
+    });
+    body.innerHTML = rows.join('');
+
+    // Row checkboxes
+    document.querySelectorAll('.row-check').forEach(cb => {
+      cb.addEventListener('change', () => {
+        if (cb.checked) selectedIds.add(cb.dataset.id);
+        else selectedIds.delete(cb.dataset.id);
+        cb.closest('tr').classList.toggle('row-selected', cb.checked);
+        updateSelectAllState(paged);
+        updateBulkBar();
+      });
+    });
+
+    updateSelectAllState(paged);
+    updateBulkBar();
+  }
+
+  function updateSelectAllState(visible) {
+    const selectAll = document.getElementById('selectAll');
+    const ids = visible.map(o => o.id);
+    const allChecked  = ids.length > 0 && ids.every(id => selectedIds.has(id));
+    const someChecked = ids.some(id => selectedIds.has(id));
+    selectAll.checked       = allChecked;
+    selectAll.indeterminate = someChecked && !allChecked;
+  }
+
+  // Status tabs
+  document.querySelectorAll('.status-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.status-tab').forEach(t => { t.className = 'topbar__btn topbar__btn--ghost status-tab'; });
+      tab.className = 'topbar__btn topbar__btn--primary status-tab';
+      activeStatus = tab.dataset.status;
+      currentPage = 1;
+      renderOrders();
+    });
+  });
+
+  document.getElementById('searchInput').addEventListener('input', () => { currentPage = 1; renderOrders(); });
+
+  // Select All checkbox — selects only current page
+  document.getElementById('selectAll').addEventListener('change', function() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = allOrders.filter(o => {
+      const matchStatus = !activeStatus || o.status === activeStatus;
+      const matchSearch = !q || o.customer?.name?.toLowerCase().includes(q) || o.customer?.email?.toLowerCase().includes(q) || o.id.includes(q);
+      return matchStatus && matchSearch;
+    });
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const paged = filtered.slice(start, start + PAGE_SIZE);
+    paged.forEach(o => { if (this.checked) selectedIds.add(o.id); else selectedIds.delete(o.id); });
+    renderOrders();
+  });
+
+  // Bulk Apply
+  document.getElementById('bulkApplyBtn').addEventListener('click', async () => {
+    if (!selectedIds.size) return;
+    const newStatus = document.getElementById('bulkStatus').value;
+    const btn = document.getElementById('bulkApplyBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Applying...';
+    let done = 0;
+    for (const id of selectedIds) {
+      try {
+        await updateDoc(doc(db, 'orders', id), { status: newStatus, updatedAt: new Date() });
+        const o = allOrders.find(o => o.id === id);
+        if (o) {
+          await logActivity(`Bulk: Order #${id.slice(-6).toUpperCase()} → ${capitalize(newStatus)}`, `Customer: ${o.customer?.name || 'Guest'}`, 'bulk');
+          o.status = newStatus;
+        }
+        done++;
+      } catch (_) {}
+    }
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-check"></i> Apply';
+    showToast(`Updated ${done} order${done !== 1 ? 's' : ''} to ${capitalize(newStatus)}`, 'success');
+    selectedIds.clear();
+    renderOrders();
+  });
+
+  // Bulk Clear
+  document.getElementById('bulkCancelBtn').addEventListener('click', () => {
+    selectedIds.clear();
+    renderOrders();
+  });
+
+  // View order detail
+  const orderModal = document.getElementById('orderModal');
+  window.viewOrder = (id) => {
+    const o = allOrders.find(o => o.id === id);
+    if (!o) return;
+    currentOrderId = id;
+    document.getElementById('orderModalTitle').textContent = `Order #${id.slice(-6).toUpperCase()}`;
+    document.getElementById('statusSelect').value = o.status || 'pending';
+
+    const date = o.createdAt?.seconds ? new Date(o.createdAt.seconds*1000).toLocaleString('en-PH') : '—';
+    document.getElementById('orderModalBody').innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+        <div style="background:var(--a-bg);border-radius:10px;padding:16px">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--a-muted);margin-bottom:10px">Customer</div>
+          <div style="font-weight:600;color:var(--a-text)">${o.customer?.name || 'Guest'}</div>
+          <div style="font-size:0.82rem;color:var(--a-muted)">${o.customer?.email || '—'}</div>
+          <div style="font-size:0.82rem;color:var(--a-muted)">${o.customer?.phone || ''}</div>
+        </div>
+        <div style="background:var(--a-bg);border-radius:10px;padding:16px">
+          <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--a-muted);margin-bottom:10px">Shipping Address</div>
+          <div style="font-size:0.85rem;color:var(--a-text);line-height:1.6">${o.customer?.address || 'No address provided'}</div>
+        </div>
+      </div>
+      <div style="background:var(--a-bg);border-radius:10px;padding:16px;margin-bottom:16px">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--a-muted);margin-bottom:12px">Order Items</div>
+        ${(o.items||[]).map(item => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--a-border)">
+            <div>
+              <div style="font-weight:600;font-size:0.875rem">${item.name}</div>
+              <div style="font-size:0.76rem;color:var(--a-muted)">${item.size||''} × ${item.qty||1}</div>
+            </div>
+            <div style="font-weight:700;color:var(--a-pink)">₱${((item.price||0)*(item.qty||1)).toLocaleString()}</div>
+          </div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding-top:12px;font-weight:700;font-size:1rem">
+          <span>Total</span><span style="color:var(--a-pink)">₱${(o.total||0).toLocaleString()}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;font-size:0.82rem;color:var(--a-muted)">
+        <span><i class="fas fa-calendar" style="margin-right:4px"></i>${date}</span>
+        <span><i class="fas fa-credit-card" style="margin-right:4px"></i>${capitalize(o.paymentMethod||'COD')}</span>
+        <span><span class="badge badge-${o.status||'pending'}">${capitalize(o.status||'pending')}</span></span>
+      </div>`;
+    orderModal.classList.add('open');
+  };
+
+  document.getElementById('closeOrderModal').addEventListener('click', () => orderModal.classList.remove('open'));
+  orderModal.addEventListener('click', e => { if (e.target === orderModal) orderModal.classList.remove('open'); });
+
+  document.getElementById('updateStatusBtn').addEventListener('click', async () => {
+    if (!currentOrderId) return;
+    const newStatus = document.getElementById('statusSelect').value;
+    try {
+      await updateDoc(doc(db, 'orders', currentOrderId), { status: newStatus, updatedAt: new Date() });
+      const order = allOrders.find(o => o.id === currentOrderId);
+      if (order) {
+        await logActivity(
+          `Order #${currentOrderId.slice(-6).toUpperCase()} → ${capitalize(newStatus)}`,
+          `Customer: ${order.customer?.name || 'Guest'} | Total: ₱${(order.total||0).toLocaleString()} | Payment: ${order.paymentMethod || 'COD'}`,
+          getOrderCategory(newStatus)
+        );
+        order.status = newStatus;
+      }
+      orderModal.classList.remove('open');
+      showToast(`Order status updated to ${capitalize(newStatus)}!`, 'success');
+      renderOrders();
+    } catch (e) { showToast('Error updating status: ' + e.message, 'error'); }
+  });
+
+  // Prev / Next page
+  document.getElementById('prevPageBtn').addEventListener('click', () => { currentPage--; renderOrders(); window.scrollTo(0,0); });
+  document.getElementById('nextPageBtn').addEventListener('click', () => { currentPage++; renderOrders(); window.scrollTo(0,0); });
+
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+    t.className = `a-toast ${type}`;
+    t.innerHTML = `<i class="fas ${icon}"></i> <span>${msg}</span>`;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+  function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+</script>
+</body>
+</html>

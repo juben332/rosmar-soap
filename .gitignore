@@ -1,0 +1,13 @@
+.vercel
+node_modules/
+package-lock.json
+.mcp.json
+mcp.json
+.claude/
+*.exe
+*.xlsx
+*.pdf
+images/client_secret*.json
+images/TeamViewer_Setup_x64.exe
+images/Workflow-AI_Social_Video_Generator.webp
+images/Neuropsychological*

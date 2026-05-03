@@ -1,0 +1,60 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Products — anyone can read, only admin can write full product
+    // Anyone can update stock + inStock fields (for order stock decrement)
+    match /products/{productId} {
+      allow read: if true;
+      allow create, delete: if request.auth != null
+        && request.auth.token.email == 'wardopon123@gmail.com';
+      allow update: if request.auth != null
+        && request.auth.token.email == 'wardopon123@gmail.com'
+        || request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['stock', 'inStock']);
+    }
+
+    // Orders — anyone can create, customers read their own, admin reads all
+    match /orders/{orderId} {
+      allow create: if true;
+      allow read: if request.auth != null
+        && (resource.data.userId == request.auth.uid
+          || request.auth.token.email == 'wardopon123@gmail.com');
+      allow update: if request.auth != null
+        && (
+          // Admin can update anything
+          request.auth.token.email == 'wardopon123@gmail.com'
+          // Customer can cancel their own pending order
+          || (resource.data.userId == request.auth.uid
+              && resource.data.status == 'pending'
+              && request.resource.data.status == 'cancelled'
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']))
+          // Customer can mark their own shipped order as delivered (received)
+          || (resource.data.userId == request.auth.uid
+              && resource.data.status == 'shipped'
+              && request.resource.data.status == 'delivered'
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']))
+          // Customer can confirm COD payment on their own delivered order
+          || (resource.data.userId == request.auth.uid
+              && resource.data.status == 'delivered'
+              && request.resource.data.paymentStatus == 'paid'
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['paymentStatus']))
+        );
+    }
+
+    // Subscribers (newsletter) — anyone can add, only admin reads
+    match /subscribers/{subId} {
+      allow create: if true;
+      allow read: if request.auth != null
+        && request.auth.token.email == 'wardopon123@gmail.com';
+    }
+
+    // Activity log — admin full access; any signed-in user can create entries
+    match /activityLog/{logId} {
+      allow read, update, delete: if request.auth != null
+        && request.auth.token.email == 'wardopon123@gmail.com';
+      allow create: if request.auth != null;
+    }
+  }
+}
