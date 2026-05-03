@@ -21,13 +21,13 @@
     </div>
     <nav class="sidebar__nav">
       <div class="sidebar__section">Main</div>
-      <a href="index.html" class="sidebar__link"><i class="fas fa-th-large"></i> Dashboard</a>
-      <a href="products.html" class="sidebar__link"><i class="fas fa-box-open"></i> Products</a>
-      <a href="orders.html" class="sidebar__link"><i class="fas fa-receipt"></i> Orders</a>
+      <a href="/admin/index" class="sidebar__link"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/admin/products" class="sidebar__link"><i class="fas fa-box-open"></i> Products</a>
+      <a href="/admin/orders" class="sidebar__link"><i class="fas fa-receipt"></i> Orders</a>
       <div class="sidebar__section">Marketing</div>
-      <a href="subscribers.html" class="sidebar__link active"><i class="fas fa-envelope"></i> Subscribers</a>
+      <a href="/admin/subscribers" class="sidebar__link active"><i class="fas fa-envelope"></i> Subscribers</a>
       <div class="sidebar__section">Settings</div>
-      <a href="../index.html" class="sidebar__link" target="_blank"><i class="fas fa-external-link-alt"></i> View Website</a>
+      <a href="/index" class="sidebar__link" target="_blank"><i class="fas fa-external-link-alt"></i> View Website</a>
     </nav>
     <div class="sidebar__footer">
       <div class="sidebar__user">
@@ -129,14 +129,14 @@
   let allSubs = [], deleteTargetId = null;
 
   onAuthStateChanged(auth, user => {
-    if (!user) { window.location.href = '../login.html'; return; }
-    if (!isAdmin(user)) { window.location.href = '../login.html?error=unauthorized'; return; }
+    if (!user) { window.location.href = "/login";; return; }
+    if (!isAdmin(user)) { window.location.href = "/login";error=unauthorized'; return; }
     document.getElementById('userEmail').textContent = user.email;
     document.getElementById('userAvatar').textContent = user.email[0].toUpperCase();
     loadSubs();
   });
 
-  document.getElementById('logoutBtn').addEventListener('click', async () => { await signOut(auth); window.location.href = '../login.html'; });
+  document.getElementById('logoutBtn').addEventListener('click', async () => { await signOut(auth); window.location.href = "/login";; });
   document.getElementById('dateDisplay').textContent = new Date().toLocaleDateString('en-PH', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
   async function loadSubs() {

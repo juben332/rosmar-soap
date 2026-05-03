@@ -21,13 +21,13 @@
     </div>
     <nav class="sidebar__nav">
       <div class="sidebar__section">Main</div>
-      <a href="index.html" class="sidebar__link active"><i class="fas fa-th-large"></i> Dashboard</a>
-      <a href="products.html" class="sidebar__link"><i class="fas fa-box-open"></i> Products</a>
-      <a href="orders.html" class="sidebar__link"><i class="fas fa-receipt"></i> Orders <span class="badge" id="pendingCount">0</span></a>
+      <a href="/admin/index" class="sidebar__link active"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="/admin/products" class="sidebar__link"><i class="fas fa-box-open"></i> Products</a>
+      <a href="/admin/orders" class="sidebar__link"><i class="fas fa-receipt"></i> Orders <span class="badge" id="pendingCount">0</span></a>
       <div class="sidebar__section">Marketing</div>
-      <a href="subscribers.html" class="sidebar__link"><i class="fas fa-envelope"></i> Subscribers</a>
+      <a href="/admin/subscribers" class="sidebar__link"><i class="fas fa-envelope"></i> Subscribers</a>
       <div class="sidebar__section">Settings</div>
-      <a href="../index.html" class="sidebar__link" target="_blank"><i class="fas fa-external-link-alt"></i> View Website</a>
+      <a href="/index" class="sidebar__link" target="_blank"><i class="fas fa-external-link-alt"></i> View Website</a>
     </nav>
     <div class="sidebar__footer">
       <div class="sidebar__user">
@@ -56,7 +56,7 @@
         <button class="topbar__btn topbar__btn--ghost" id="soundBtn" title="Click to enable notification sound" style="gap:6px">
           <i class="fas fa-bell-slash" id="soundIcon"></i> <span id="soundLabel">Enable Sound</span>
         </button>
-        <a href="products.html" class="topbar__btn topbar__btn--primary">
+        <a href="/admin/products" class="topbar__btn topbar__btn--primary">
           <i class="fas fa-plus"></i> Add Product
         </a>
       </div>
@@ -109,7 +109,7 @@
         <div class="panel">
           <div class="panel__head">
             <div class="panel__title">Recent Orders</div>
-            <a href="orders.html" style="font-size:0.8rem;color:var(--a-pink);font-weight:600">View all →</a>
+            <a href="/admin/orders" style="font-size:0.8rem;color:var(--a-pink);font-weight:600">View all →</a>
           </div>
           <div class="table-wrap">
             <table>
@@ -189,7 +189,7 @@
       <div class="panel" style="margin-top:20px" id="lowStockPanel">
         <div class="panel__head">
           <div class="panel__title"><i class="fas fa-exclamation-triangle" style="color:var(--a-warning);margin-right:8px;font-size:0.9rem"></i>Inventory Alerts</div>
-          <a href="products.html" style="font-size:0.8rem;color:var(--a-pink);font-weight:600">Manage stock →</a>
+          <a href="/admin/products" style="font-size:0.8rem;color:var(--a-pink);font-weight:600">Manage stock →</a>
         </div>
         <div class="table-wrap">
           <table>
@@ -213,7 +213,7 @@
       <div class="panel" style="margin-top:20px">
         <div class="panel__head">
           <div class="panel__title">Product Overview</div>
-          <a href="products.html" style="font-size:0.8rem;color:var(--a-pink);font-weight:600">Manage all →</a>
+          <a href="/admin/products" style="font-size:0.8rem;color:var(--a-pink);font-weight:600">Manage all →</a>
         </div>
         <div class="table-wrap">
           <table>
@@ -380,8 +380,8 @@
 
   // Auth guard — admin only
   onAuthStateChanged(auth, user => {
-    if (!user) { window.location.href = '../login.html'; return; }
-    if (!isAdmin(user)) { window.location.href = '../login.html?error=unauthorized'; return; }
+    if (!user) { window.location.href = "/login";; return; }
+    if (!isAdmin(user)) { window.location.href = "/login";error=unauthorized'; return; }
     document.getElementById('userEmail').textContent = user.email;
     document.getElementById('userAvatar').textContent = user.email[0].toUpperCase();
     loadDashboard();
@@ -391,7 +391,7 @@
   // Logout
   document.getElementById('logoutBtn').addEventListener('click', async () => {
     await signOut(auth);
-    window.location.href = '../login.html';
+    window.location.href = "/login";;
   });
 
   // Date
@@ -609,7 +609,7 @@
             <span class="stock-badge ${stockClass(p.stock??0)}">${p.stock??0} units</span>
             ${stockBar(p.stock??0)}
           </td>
-        </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--a-muted)">No products yet. <a href="products.html" style="color:var(--a-pink)">Add your first product</a></td></tr>';
+        </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--a-muted)">No products yet. <a href="/admin/products" style="color:var(--a-pink)">Add your first product</a></td></tr>';
 
     } catch (err) {
       console.error(err);
