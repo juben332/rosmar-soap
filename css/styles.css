@@ -1,5 +1,5 @@
 /* ============================================================
-   Habibi Skincare — Main Stylesheet
+   Rosmar Soap — Main Stylesheet
    ============================================================ */
 
 /* ── Page Loader ─────────────────────────────────────────────── */
@@ -804,7 +804,7 @@ p { color: var(--muted); line-height: 1.8; }
 }
 .about-hero__img {
   position: absolute; right: 0; top: 0; width: 45%; height: 100%;
-  background: url('../images/Habibi.jpg') center/cover;
+  background: url('../images/Rosmar.jpg') center/cover;
   clip-path: polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%);
 }
 .about-hero__img::before { content:''; position:absolute; inset:0; background:rgba(44,24,16,0.15); }

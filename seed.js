@@ -1,8 +1,8 @@
-// Habibi Skincare — Firestore REST API Seeder
+// Rosmar Soap — Firestore REST API Seeder
 import { readFileSync } from 'fs';
 import { homedir } from 'os';
 
-const PROJECT_ID = 'habibi-skincare-ph';
+const PROJECT_ID = 'rosmar-skincare-ph';
 const BASE_URL   = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
 
 const config      = JSON.parse(readFileSync(homedir() + '/.config/configstore/firebase-tools.json', 'utf8'));
@@ -37,7 +37,7 @@ const products = [
 ];
 
 async function seed() {
-  console.log('Seeding Habibi Skincare products...\n');
+  console.log('Seeding Rosmar Soap products...\n');
 
   // Check existing
   const check = await fetch(`${BASE_URL}/products?pageSize=1`, { headers });
@@ -48,7 +48,7 @@ async function seed() {
   }
   if (checkData.error) {
     console.error('Firestore error:', checkData.error.message);
-    console.error('Make sure Firestore is enabled at: https://console.firebase.google.com/project/habibi-skincare-ph/firestore');
+    console.error('Make sure Firestore is enabled at: https://console.firebase.google.com/project/rosmar-skincare-ph/firestore');
     process.exit(1);
   }
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Products — Habibi Admin</title>
+  <title>Products — Rosmar Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar__brand">
       <img src="../images/rosmar.png" alt="Logo" class="sidebar__brand-logo" onerror="this.style.display='none'">
-      <div class="sidebar__brand-name">Habibi<span>.</span></div>
+      <div class="sidebar__brand-name">Rosmar<span>.</span></div>
     </div>
     <nav class="sidebar__nav">
       <div class="sidebar__section">Main</div>
@@ -409,7 +409,7 @@
 
   // Seed default products
   document.getElementById('seedBtn').addEventListener('click', async () => {
-    if (!confirm('This will add the default Habibi products to Firestore. Continue?')) return;
+    if (!confirm('This will add the default Rosmar products to Firestore. Continue?')) return;
     const defaults = [
       { name:'Luminous Gel Cleanser',         category:'cleanser',    price:890,  size:'150ml', benefit:'Deeply cleanses & brightens dull skin',          image:'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&auto=format&fit=crop&q=80',    badge:'best', stock:50, inStock:true },
       { name:'Milk & Honey Oil Cleanser',      category:'cleanser',    price:1190, size:'100ml', benefit:'Melts makeup & nourishes deeply',                image:'https://images.unsplash.com/photo-1556228841-a3c527ebefe5?w=600&auto=format&fit=crop&q=80',    badge:'',     stock:40, inStock:true },
