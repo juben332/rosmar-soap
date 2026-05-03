@@ -234,11 +234,14 @@
   // Load products
   async function loadProducts() {
     try {
-      const snap = await getDocs(query(collection(db, 'products'), orderBy('createdAt', 'desc')));
-      allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const snap = await getDocs(collection(db, 'products'));
+      allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
       renderProducts(allProducts);
     } catch (e) {
-      renderProducts([]);
+      console.error('loadProducts error:', e);
+      document.getElementById('productsBody').innerHTML =
+        `<tr><td colspan="6" style="text-align:center;padding:32px;color:red">Error loading products: ${e.message}</td></tr>`;
     }
   }
 

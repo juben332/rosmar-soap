@@ -428,7 +428,7 @@
             <td><span class="badge badge-${o.status||'pending'}">${capitalize(o.status||'pending')}</span></td>
           </tr>`).join('') : '<tr><td colspan="4" style="text-align:center;padding:32px;color:var(--a-muted)">No orders yet</td></tr>';
       }
-    });
+    }, err => { console.warn('Orders listener:', err.message); });
   }
 
   function stockClass(stock) {
@@ -453,8 +453,8 @@
     try {
       const [products, subs, logs] = await Promise.all([
         getDocs(collection(db, 'products')),
-        getDocs(collection(db, 'subscribers')),
-        getDocs(query(collection(db, 'activityLog'), orderBy('timestamp', 'desc'), limit(20)))
+        getDocs(collection(db, 'subscribers')).catch(() => ({ docs: [], size: 0 })),
+        getDocs(query(collection(db, 'activityLog'), orderBy('timestamp', 'desc'), limit(20))).catch(() => ({ docs: [] })),
       ]);
 
       // Stats
